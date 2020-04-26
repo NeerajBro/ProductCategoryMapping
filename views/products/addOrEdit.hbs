@@ -1,0 +1,50 @@
+<h3>{{viewTitle}}</h3>
+<script>
+    Handlebars.registerHelper('selected', function (option, value) {
+        if (option === value) {
+            return ' selected';
+        } else {
+            return ''
+        }
+    });
+</script>
+<form action="/product" method="POST" autocomplete="off">
+    <input type="hidden" name="_id" value="{{product._id}}">
+    <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" class="form-control" name="productName" placeholder="Product Name" value="{{product.productName}}">
+        <div class="text-danger">
+            {{product.productNameError}}</div>
+    </div>
+    <div class="form-group">
+        <label>Product Description</label>
+        <input type="text" class="form-control" name="productDes" placeholder="Product Description" value="{{product.productDes}}">
+    </div>
+
+    <div class="form-group">
+        <label>price</label>
+        <input type="number" class="form-control" name="price" placeholder="sales price" value="{{product.price}}">
+    </div>
+
+    <div class="form-group">
+        <label>Sku</label>
+        <input type="text" class="form-control" name="sku" placeholder="Sku" value="{{product.sku}}">
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group col-md-6">
+            <label>Select Category</label>
+            <select name="categoryIDs" class="form-control" multiple="true">
+                {{#each categoryList}}
+                <option value="{{this._id}}">{{this.categoryName}}</option>
+                {{/each}}
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-info"><i class="fa fa-database"></i> Submit</button>
+        <a class="btn btn-secondary" href="/product/list"><i class="fa fa-list-alt"></i> View All</a>
+    </div>
+</form>

@@ -1,0 +1,21 @@
+{
+  "name": "heady",
+  "version": "1.0.0",
+  "description": "Heady Backend Developer SAT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Neeraj Shukla",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.9.10"
+  },
+  "devDependencies": {
+    "handlebars": "^4.5.0"
+  }
+}

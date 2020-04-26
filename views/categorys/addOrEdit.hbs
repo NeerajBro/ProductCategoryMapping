@@ -1,0 +1,25 @@
+<h3>{{viewTitle}}</h3>
+
+<form action="/category" method="POST" autocomplete="off">
+    <input type="hidden" name="_id" value="{{category._id}}">
+    <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" class="form-control" name="categoryName" placeholder="Full Name" value="{{category.categoryName}}">
+        <div class="text-danger">
+            {{category.categoryNameError}}</div>
+    </div>
+    <div class="form-group">
+        <label>Select Child Category</label>
+        <select class="form-control" multiple="true" name="childCategoryIDs">
+            <option value="">-- Select Child Category -- </option>
+            {{#each list}}
+            <option value="{{this._id}}">{{this.categoryName}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-info"><i class="fa fa-database"></i> Submit</button>
+        <a class="btn btn-secondary" href="/category/list"><i class="fa fa-list-alt"></i> View All</a>
+    </div>
+</form>
