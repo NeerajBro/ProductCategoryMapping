@@ -1,0 +1,51 @@
+1) Product add API (To add product keep blank "_id" in request)
+        Url :- http://localhost:3000/product/api/productAddEdit
+        type:-  POST
+        Request:-   {
+                    "_id" : "",
+                    "productName": "Headphone",
+                    "productDes": "Boat headphone",
+                    "price": 5000,
+                    "sku": "Someunq sku",
+                    "categoryIDs": ["5ea612563ceb96713c49a077","5ea612563ceb96713c49a077"]
+                    }
+2)Product update API  (to update any product pass the id of product)
+        Url :-  http://localhost:3000/product/api/productAddEdit
+        type:-  POST
+        Request:-   {
+                    "_id" : "5ea91d77333b7f09b4dffd6a",
+                    "productName": "Headphone",
+                    "productDes": "Boat headphone",
+                    "price": 5000,
+                    "sku": "Someunq sku",
+                    "categoryIDs": ["5ea612563ceb96713c49a077","5ea612563ceb96713c49a077"]
+                    }
+3)Category Add API
+        URL :- http://localhost:3000/category/api/categoryAddUpdate
+        type:-  POST
+        Request:- {
+                    "_id" : "",
+                "categoryName": "sixth ",
+                "childCategoryIDs":["5ea9285597a9b40b61b4d312"]
+                }
+
+4)Category Update (To update category pass the "_id") 
+        URL :- http://localhost:3000/category/api/categoryAddUpdate
+        type:-  POST
+        Request:- {
+                "_id" : "5ea9285597a9b40b61b4d312",
+                "categoryName": "sixth ",
+                "childCategoryIDs":["5ea9285597a9b40b61b4d312"]
+                }
+
+4)Get Product By Category 
+        Url :- http://localhost:3000/product/api/getProductByCat
+        type:-  POST
+        Request:- {
+                "categoryIDs": ["5ea612563ceb96"]
+                }
+
+5)Get all Category with childCategoryIDs
+        URL:- http://localhost:3000/category/api/list
+        type:-  GET
+        Request :- {}

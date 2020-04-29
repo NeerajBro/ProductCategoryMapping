@@ -30,7 +30,26 @@ router.post("/", (req, res) => {
   else updateRecord(req, res);
 });
 
-function insertRecord(req, res) {
+router.post("/api/productAddEdit", (req, res) => {
+  if (req.body._id == "") insertRecord(req, res, 1);
+  else updateRecord(req, res, 1);
+});
+
+router.post("/api/getProductByCat", (req, res) => {
+  console.log("Requ ", req.body.categoryIDs);
+  if (req.body.categoryIDs == "" || req.body.categoryIDs === undefined) {
+    res.json({ code: 400, msg: "Category ids are required", status: "fail" });
+  } else {
+    reqCategoryIDS = req.body.categoryIDs;
+    Product.find({ categoryIDs: { $in: reqCategoryIDS } }, (err, doc) => {
+      if (!err) {
+        res.json(doc);
+      }
+    });
+  }
+});
+
+function insertRecord(req, res, isapi = 0) {
   var product = new Product();
   product.productName = req.body.productName;
   product.productDes = req.body.productDes;
@@ -38,49 +57,79 @@ function insertRecord(req, res) {
   product.sku = req.body.sku;
   product.categoryIDs = req.body.categoryIDs;
   product.save((err, doc) => {
-    if (!err) res.redirect("product/list");
-    else {
+    if (!err) {
+      let successResponse = {
+        code: 200,
+        msg: "Product has been added successfully",
+        status: "success"
+      };
+      if (isapi != 0) res.json(successResponse);
+      else res.redirect("product/list");
+    } else {
+      let failResponse = {
+        code: 400,
+        msg: "",
+        status: "fail"
+      };
+
       if (err.name == "ValidationError") {
         handleValidationError(err, req.body);
-        res.render("products/addOrEdit", {
-          viewTitle: "Insert Product",
-          product: req.body
-        });
-      } else console.log("Error during record insertion : " + err);
+        failResponse.msg = req.body;
+
+        if (isapi != 0) res.json(failResponse);
+        else {
+          res.render("products/addOrEdit", {
+            viewTitle: "Insert Product",
+            product: req.body
+          });
+        }
+      } else {
+        failResponse.msg = err;
+        if (isapi != 0) res.json(failResponse);
+        else console.log("Error during record insertion : " + err);
+      }
     }
   });
 }
 
-function updateRecord(req, res) {
+function updateRecord(req, res, isapi = 0) {
   Product.findOneAndUpdate(
     { _id: req.body._id },
     req.body,
     { new: true },
     (err, doc) => {
       if (!err) {
-        res.redirect("product/list");
+        let successResponse = {
+          code: 200,
+          msg: "Product has been updated successfully",
+          status: "success"
+        };
+        if (isapi != 0) res.json(successResponse);
+        else res.redirect("product/list");
       } else {
+        let failResponse = {
+          code: 400,
+          msg: "",
+          status: "fail"
+        };
         if (err.name == "ValidationError") {
           handleValidationError(err, req.body);
-          res.render("products/addOrEdit", {
-            viewTitle: "Update Product",
-            product: req.body
-          });
-        } else console.log("Error during record update : " + err);
+          failResponse.msg = req.body;
+          if (isapi != 0) res.json(failResponse);
+          else {
+            res.render("products/addOrEdit", {
+              viewTitle: "Update Product",
+              product: req.body
+            });
+          }
+        } else {
+          failResponse.msg = err;
+          if (isapi != 0) res.json(failResponse);
+          else console.log("Error during record update : " + err);
+        }
       }
     }
   );
-}
-
-function getAllCategory() {
-  Category.find((err, docs) => {
-    // console.log("Got data ", docs);
-    if (!err) {
-      return docs;
-    } else {
-      return "";
-    }
-  });
 }
 
 router.get("/list", (req, res) => {
